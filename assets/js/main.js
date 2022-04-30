@@ -1,5 +1,7 @@
 const feedButton = document.getElementById('feedButton');
 const text = document.getElementById('text');
+const d = new Date();
+
 
 light(0, 0);
 
@@ -11,11 +13,11 @@ function light(red, green) {
 }
 
 // Post data from record form
-function postFeed(feedValue){
+function postFeed(day){
 
   // GET FORM DATA
   let data = new FormData();
-  data.append("value", feedValue);
+  data.append("value", day);
 
   // AJAX
   let xhr = new XMLHttpRequest();
@@ -33,14 +35,14 @@ function readFeed() {
     // This is where you handle what to do with the response.
     // The actual data is found on this.responseText
     var feedValue = this.responseText;
-    if (feedValue == 0) {
+    if (feedValue != d.getDate()) {
       light(0, 1);
       text.innerHTML = `Boubouille a faim !`
       feedButton.onclick = function () {
         light(1, 0);
         text.innerHTML = `Boubouille a mangé !`
         feedButton.style.display = "none";
-        postFeed(1);
+        postFeed(d.getDate());
       }
     }
     else {
